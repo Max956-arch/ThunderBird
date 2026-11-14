@@ -18,6 +18,17 @@ class ThunderbirdContact extends HttpRequest implements Runnable {
     private int seatLocation; 
     public int getSeat() { return seatLocation; }
 
+    private String preferredName;
+    public String getPreferredName() { return preferredName; }
+
+    private String emailAddress;
+    public String getEmailAddress() { return emailAddress; }
+
+    private String superhero;
+    public String getSuperhero() { return superhero; }
+
+    private String author;
+
     ThunderbirdContact(String urlIn) {
         super(urlIn);
 
@@ -26,6 +37,9 @@ class ThunderbirdContact extends HttpRequest implements Runnable {
         seatLocation = 0;
 
         // Todo: Add additional fields. 
+        preferredName = "";
+        emailAddress = "";
+        superhero = "";
     }
 
     public Boolean Load() {
@@ -49,6 +63,15 @@ class ThunderbirdContact extends HttpRequest implements Runnable {
                     firstName = subString[3];
                 }
                 if (subString[1].equals("lastName")) {
+                    lastName = subString[3];
+                }
+                if (subString[1].equals("preferredName")) {
+                    lastName = subString[3];
+                }
+                if (subString[1].equals("emailAddress")) {
+                    lastName = subString[3];
+                }
+                if (subString[1].equals("superhero")) {
                     lastName = subString[3];
                 }
                 if (subString[1].equals("seatLocation")) {
@@ -76,6 +99,8 @@ class ThunderbirdContact extends HttpRequest implements Runnable {
         // Todo: Add author's name and email address to failed messages. 
         if (firstName.length() == 0) {
             System.out.println("Validating: " + requestURL);
+            System.out.println("Author: " + author);
+            System.out.println("Email: " + emailAddress);
             System.out.println("    **Failed**: First Name (\"firstName\") required but not found\n\n");
             System.out.println(this);
         } else if (lastName.length() == 0) {   
@@ -92,6 +117,9 @@ class ThunderbirdContact extends HttpRequest implements Runnable {
         String returnString = "firstName: " + firstName + "\n";
         returnString = returnString + "lastName: " + lastName + "\n";
         returnString = returnString + "seatNumber: " + seatLocation + "\n";
+        returnString = returnString + "preferredName: " + preferredName + "\n";
+        returnString = returnString + "emailAddress: " + emailAddress + "\n";
+        returnString = returnString + "superhero: " + superhero + "\n";
         returnString = returnString + super.toString();
 
         return returnString;

@@ -41,8 +41,11 @@ class ThunderbirdModel extends HttpRequest {
                 }
             }            
         }
-        
-        return returnValue; 
+        if (contactList.size() == 0) {
+            returnValue = false;
+        }
+
+        return returnValue;
     }
 
     public void LoadContacts() {

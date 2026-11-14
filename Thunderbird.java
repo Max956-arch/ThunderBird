@@ -35,6 +35,10 @@ class ContactTile extends JPanel {
     private ThunderbirdContact contactInSeat = null;
 
     private Boolean isAnAisle = false;
+
+    private Color seatColor = new Color(25,25,122);
+    private Color aisleColor = new Color(70,70,70);
+
     public void setAisle() { isAnAisle = true; }
 
     ContactTile() {
@@ -42,12 +46,10 @@ class ContactTile extends JPanel {
 
         // Todo: Remove everything to do with random colors.
         // Todo: Implement visually appealing colors for aisles and seats.
-        SetRandomValues();
     }
 
     ContactTile(ThunderbirdContact contactInSeatIn) {
         super();
-        SetRandomValues();
         contactInSeat = contactInSeatIn;
     }
 
@@ -69,9 +71,9 @@ class ContactTile extends JPanel {
         int panelHeight = getHeight();
 
         if (isAnAisle) {
-            g.setColor(new Color(0,0,0));
+            g.setColor(aisleColor);
         } else {
-            g.setColor(new Color(red,green,blue));
+            g.setColor(seatColor);
         }
         
         g.fillRect (10, 10, panelWidth-20, panelHeight-20);
@@ -95,10 +97,11 @@ class ContactTile extends JPanel {
     }
 }
 
-class ThunderbirdLiteFrame extends JFrame implements ActionListener {
+class ThunderbirdFrame extends JFrame implements ActionListener {
     private ArrayList<ContactTile> tileList;
+    private boolean reversed = false;
 
-    public ThunderbirdLiteFrame() {
+    public ThunderbirdFrame() {
         setBounds(200,200,1200,800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -114,11 +117,11 @@ class ThunderbirdLiteFrame extends JFrame implements ActionListener {
 
         JPanel contactGridPanel = new JPanel();
         contentPane.add(contactGridPanel, BorderLayout.CENTER);
-        contactGridPanel.setLayout(new GridLayout(4,8));
+        contactGridPanel.setLayout(new GridLayout(4,8,10,10));
 
         ThunderbirdModel tbM = new ThunderbirdModel();
         tbM.LoadIndex();
-        tbM.LoadContacts();
+        tbM.LoadContactsThreaded();
 
         // Todo: Review ThunderbirdModel in detail and implement a multithreaded version of loading contacts. 
         // Hint: Review LoadContact() and LoadContactsThreaded() in detail.
@@ -129,6 +132,14 @@ class ThunderbirdLiteFrame extends JFrame implements ActionListener {
 
 
         tileList = new ArrayList<ContactTile>();
+
+        ArrayList<Integer> aisleSeats =
+            new ArrayList <Integer>();
+
+            aisleSeats.add(4);
+            aisleSeats.add(12);
+            aisleSeats.add(31);
+
         for(int i=1; i<33; i++) {
             ThunderbirdContact contactInSeat = tbM.findContactInSeat(i);
             if (contactInSeat != null) {
@@ -137,8 +148,16 @@ class ThunderbirdLiteFrame extends JFrame implements ActionListener {
 
             ContactTile tile = new ContactTile(contactInSeat);
 
+            tile.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent e) {
+                    if(contactInSeat != null) {
+                        new ContactDetailFrame(contactInSeat);
+                    }
+                }
+            });
+
             // Todo: Place all the aisle seats in a array or an ArrayList instead of hard coding them. 
-            if ((i==4)||(i==12)||(i==31)) {
+            if (aisleSeats.contains(i)) {
                 tile.setAisle();
             }
 
@@ -148,13 +167,11 @@ class ThunderbirdLiteFrame extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        for(ContactTile tile : tileList) {
             // Todo: Remove randomization functionality and implement a visually appealing view of seats and aisles.
-            tile.SetRandomValues();
+            reversed =!reversed;
 
             // Todo: Implement reverse view where it looks like you are looking at the room from the back instead of the front 
             //     of the room. 
-        }
 
         repaint();
     }
@@ -162,13 +179,23 @@ class ThunderbirdLiteFrame extends JFrame implements ActionListener {
 
 // Todo: Rename the following class to Thunderbird.
 // Hint: This will also require you to rename the Java file.
-public class ThunderbirdLite {
+public class Thunderbird {
     public static void main(String[] args) {
 
-        // Todo: Update the following line so that it reflects the name change to Thunderbird.
-        System.out.println("ThunderbirdPrime Starting...");
+        for (int i = 0; i < args.length; i++) {
+            if(args[i].equalsIgnoreCase("-HttpRequest")) {
+                if(i + 1 < args.length) {
+                    HTTPRequestFeature.Run(args[i + 1]);
 
-        ThunderbirdLiteFrame myThunderbirdLiteFrame = new ThunderbirdLiteFrame();
-        myThunderbirdLiteFrame.setVisible(true);
+                    return;
+                }
+            }
+        }
+
+        // Todo: Update the following line so that it reflects the name change to Thunderbird.
+        System.out.println("Thunderbird Starting...");
+
+        ThunderbirdFrame myThunderbirdFrame = new ThunderbirdFrame();
+        myThunderbirdFrame.setVisible(true);
     }
 }
