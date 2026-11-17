@@ -41,6 +41,8 @@ class ThunderbirdModel extends HttpRequest {
                 }
             }            
         }
+        // MD: This line of code veifys that at least one contact was sucessfully added.
+        // MD: It will also make sure that LoadIndex() is true if at least one contact URL is discovered
         if (contactList.size() == 0) {
             returnValue = false;
         }

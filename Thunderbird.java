@@ -36,6 +36,7 @@ class ContactTile extends JPanel {
 
     private Boolean isAnAisle = false;
 
+    // MD: Sets a static color for both the Aisles and Seats.
     private Color seatColor = new Color(25,25,122);
     private Color aisleColor = new Color(70,70,70);
 
@@ -70,6 +71,7 @@ class ContactTile extends JPanel {
         int panelWidth = getWidth();
         int panelHeight = getHeight();
 
+        // MD: Sets a static color for both the Aisles and Seats.
         if (isAnAisle) {
             g.setColor(aisleColor);
         } else {
@@ -87,8 +89,14 @@ class ContactTile extends JPanel {
         if (contactInSeat != null) {
 
             // ToDo: Display preferred name instead of first and last name. 
-            String firstAndLastName = contactInSeat.getFirstName()+" "+contactInSeat.getLastName();
-            g.drawString(firstAndLastName,stringX,stringY);
+            String displayName = contactInSeat.getPreferredName();
+            if(displayName == null || displayName.length() == 0){
+                displayName =
+                    contactInSeat.getFirstName() + " " +
+                    contactInSeat.getLastName();
+            }
+
+            g.drawString(displayName, stringX, stringY);
         }
     }
 
