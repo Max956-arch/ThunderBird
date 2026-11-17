@@ -88,7 +88,8 @@ class ContactTile extends JPanel {
         int stringY = (panelHeight/2)+30;
         if (contactInSeat != null) {
 
-            // ToDo: Display preferred name instead of first and last name. 
+            // ToDo: Display preferred name instead of first and last name.
+            // MD: This shows the Students preferred classroom name instead of the first/last name 
             String displayName = contactInSeat.getPreferredName();
             if(displayName == null || displayName.length() == 0){
                 displayName =
@@ -107,6 +108,7 @@ class ContactTile extends JPanel {
 
 class ThunderbirdFrame extends JFrame implements ActionListener {
     private ArrayList<ContactTile> tileList;
+    // MD: for the reverse button
     private boolean reversed = false;
 
     public ThunderbirdFrame() {
@@ -123,12 +125,14 @@ class ThunderbirdFrame extends JFrame implements ActionListener {
         buttonPanel.add(reverseView);
         reverseView.addActionListener(this);
 
+        // MD: This makes the classroom seats look better
         JPanel contactGridPanel = new JPanel();
         contentPane.add(contactGridPanel, BorderLayout.CENTER);
         contactGridPanel.setLayout(new GridLayout(4,8,10,10));
 
         ThunderbirdModel tbM = new ThunderbirdModel();
         tbM.LoadIndex();
+        // MD: Leads all the contacts using multiple threads
         tbM.LoadContactsThreaded();
 
         // Todo: Review ThunderbirdModel in detail and implement a multithreaded version of loading contacts. 
@@ -141,6 +145,7 @@ class ThunderbirdFrame extends JFrame implements ActionListener {
 
         tileList = new ArrayList<ContactTile>();
 
+        // MD: creates an array list and adds three seat numbers to it.
         ArrayList<Integer> aisleSeats =
             new ArrayList <Integer>();
 
@@ -156,6 +161,7 @@ class ThunderbirdFrame extends JFrame implements ActionListener {
 
             ContactTile tile = new ContactTile(contactInSeat);
 
+            // MD: When you click the seat it opens an additional information window.
             tile.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent e) {
                     if(contactInSeat != null) {
@@ -165,6 +171,7 @@ class ThunderbirdFrame extends JFrame implements ActionListener {
             });
 
             // Todo: Place all the aisle seats in a array or an ArrayList instead of hard coding them. 
+            // MD: Makes the aisle locations eaiser to chnage without modifying logic
             if (aisleSeats.contains(i)) {
                 tile.setAisle();
             }
@@ -177,7 +184,13 @@ class ThunderbirdFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
             // Todo: Remove randomization functionality and implement a visually appealing view of seats and aisles.
             reversed =!reversed;
-
+            // MD: reverses the classroom when the button is clicked.
+            if(reversed){
+        java.util.Collections.reverse(tileList);
+    }
+    else{
+        java.util.Collections.reverse(tileList);
+    }
             // Todo: Implement reverse view where it looks like you are looking at the room from the back instead of the front 
             //     of the room. 
 
@@ -187,9 +200,11 @@ class ThunderbirdFrame extends JFrame implements ActionListener {
 
 // Todo: Rename the following class to Thunderbird.
 // Hint: This will also require you to rename the Java file.
+// MD: I made sure I renamed all of the classes and objects to Thunderbird
 public class Thunderbird {
     public static void main(String[] args) {
 
+        // MD: Searchs the command line arguments for HttpRequest, and then runs it
         for (int i = 0; i < args.length; i++) {
             if(args[i].equalsIgnoreCase("-HttpRequest")) {
                 if(i + 1 < args.length) {

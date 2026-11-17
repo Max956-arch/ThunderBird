@@ -18,6 +18,7 @@ class ThunderbirdContact extends HttpRequest implements Runnable {
     private int seatLocation; 
     public int getSeat() { return seatLocation; }
 
+    // MD: All of the additional ThunderbirdContact Fields
     private String preferredName;
     public String getPreferredName() { return preferredName; }
 
@@ -28,7 +29,9 @@ class ThunderbirdContact extends HttpRequest implements Runnable {
     public String getSuperhero() { return superhero; }
 
     private String author;
+    public String getAuthor() { return author; }
 
+    //MD: adds additional fields into the constructor
     ThunderbirdContact(String urlIn) {
         super(urlIn);
 
@@ -65,6 +68,7 @@ class ThunderbirdContact extends HttpRequest implements Runnable {
                 if (subString[1].equals("lastName")) {
                     lastName = subString[3];
                 }
+                // MD: Extracts additional information for each contact JSON file
                 if (subString[1].equals("preferredName")) {
                     lastName = subString[3];
                 }
@@ -97,6 +101,7 @@ class ThunderbirdContact extends HttpRequest implements Runnable {
         }
 
         // Todo: Add author's name and email address to failed messages. 
+        // MD: Added additional validational enhancements
         if (firstName.length() == 0) {
             System.out.println("Validating: " + requestURL);
             System.out.println("Author: " + author);
@@ -114,6 +119,7 @@ class ThunderbirdContact extends HttpRequest implements Runnable {
 
     public String toString() {
         // Todo: Add additional fields to returnString. 
+        // MD: Added aditional fields and then prints all parsed contact information
         String returnString = "firstName: " + firstName + "\n";
         returnString = returnString + "lastName: " + lastName + "\n";
         returnString = returnString + "seatNumber: " + seatLocation + "\n";
