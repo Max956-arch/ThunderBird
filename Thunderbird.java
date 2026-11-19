@@ -38,7 +38,7 @@ class ContactTile extends JPanel {
 
     // MD: Sets a static color for both the Aisles and Seats.
     private Color seatColor = new Color(25,25,122);
-    private Color aisleColor = new Color(70,70,70);
+    private Color aisleColor = new Color(40,40,40);
 
     public void setAisle() { isAnAisle = true; }
 
